@@ -5,21 +5,8 @@ import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { addToCart} from "@/redux/reducers/cartSlice";
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
-const notify = () => {
-  toast.success('Thêm vào giỏ hàng thành công!!', {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    });
-}
+
 
 
 const formatPrice = (price) => {
@@ -38,7 +25,6 @@ const ProductCard = ({
 
   return (
     <div className="m-1">
-    <ToastContainer />
       <Link href={`/${productData.code}`}>
         <div className="product">
           {/* <span className="pr_flash">New</span> */}
@@ -64,7 +50,6 @@ const ProductCard = ({
                             amount: 1,
                           },
                         }));
-                        notify();
 
                     }}>
                       <Link href="/"

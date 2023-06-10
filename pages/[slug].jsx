@@ -22,25 +22,12 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import ImageZoom from 'react-image-zoom';
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 import { addToCart} from "@/redux/reducers/cartSlice";
 import { useDispatch } from "react-redux";
 import { getAllProduct } from "../action/menuApi";
 
-const notify = () => {
-  toast.success('Thêm vào giỏ hàng thành công!!', {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    });
-}
+
 
 
 const ProductDetail = ({ product }) => {
@@ -122,7 +109,6 @@ const ProductDetail = ({ product }) => {
   ]
   return (
     <>
-    <ToastContainer />
 
       <BreadCrumb
         descriptionTitle="Chi Tiết Sản Phẩm"
@@ -267,7 +253,6 @@ const ProductDetail = ({ product }) => {
                               amount: 1,
                             },
                           }));
-                          notify();
                       }}
 
                         >

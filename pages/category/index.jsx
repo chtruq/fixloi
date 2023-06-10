@@ -63,10 +63,18 @@ const PriceFilter = () => {
 };
 // joioioijoioioioiooioiioveeee
 const shopleft = ({ products, categories }) => {
-    console.log(products);
+    // console.log(products);
     const [showProductActionBox, setShowProductActionBox] = useState(true);
     const [data, setData] = useState(products)
     const [selectedSortOption, setSelectedSortOption] = useState('');
+
+    
+  const [allProducts, setAllProducts] = useState();
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filteredProductsCate, setFilteredProductsCate] = useState([]);
+
+
+
     const sortData = (sortOption) => {
         let sortedData = [...data];
     
@@ -96,6 +104,34 @@ const shopleft = ({ products, categories }) => {
         setSelectedSortOption(selectedOption);
         sortData(selectedOption); // Pass selectedOption as an argument to sortData
       };
+
+
+      useEffect(() => {
+        const filterProductCate = categories.map((category) => {
+          const filteredProducts = products.filter((product) =>
+            product.categoryId.includes(category.id)
+          );
+          return {
+            category: category,
+            products: filteredProducts,
+          };
+        });
+        setFilteredProductsCate(filterProductCate);
+      }, []);
+
+    //   console.log(filteredProductsCate);
+// const cateCodeObject = filteredProductsCate.filter((obj) => obj.category.code === "GB") 
+// const cateProduct = cateCodeObject.products;
+
+// console.log(cateProduct);
+
+
+//   cateCodeObject.forEach((obj) => {
+//     console.log(obj);
+//   })
+
+
+
     return (
         <div className="main_content">
             <div className="section">
@@ -160,7 +196,10 @@ export default shopleft
 export async function getStaticProps() {
     const data = await getAllProduct();
     const products = data.products   // take the products attribute in the menu
-    const categories = data.collections
+    const categories = data.categories
+
+    
+
     return {
         props: { products, categories }
     }

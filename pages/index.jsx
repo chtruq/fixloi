@@ -121,7 +121,18 @@ function Home({ products, categories }) {
     setFilteredProductsCate(filterProductCate);
   }, []);
 
-  console.log(filteredProductsCate);
+  // console.log(filteredProductsCate[10].category.type);
+
+
+  
+  //Filter base on Category Type 
+
+
+  // const extraObject = filteredProductsCate.filter((obj) => obj.category.type === "Normal") 
+
+  // extraObject.forEach((obj) => {
+  //   console.log(obj);
+  // })
 
   // console.log(categories);
 
@@ -449,7 +460,7 @@ function Home({ products, categories }) {
                   <div className={styles.shop} style={{ position: "relative" }}>
                     <Slider ref={sliderRef5} {...settings}>
                     {filteredProductsCate.length > 0 &&
-                            filteredProductsCate[14].products.map((product) => (
+                            filteredProductsCate[15].products.map((product) => (
                               <div key={product.id} className="item">
                                 <ProductCard
                                 productData={product}
@@ -600,7 +611,7 @@ function Home({ products, categories }) {
                                   maxHeight: "220px",
                                   overflow: "hidden",
                                 }}
-                              >
+                              > 
                                 <ProductList
                                   productData={product}
                                   // showProductActionBox={showProductActionBox}
@@ -610,6 +621,19 @@ function Home({ products, categories }) {
                           </div>
                         ))}
                       </Slider>
+                      {/* <Slider
+                        ref={sliderRef7}
+                        {...specialSettings}>
+                        {filteredProductsCate.length > 0 &&
+                            filteredProductsCate[12].products.map((product) => (
+                              <div key={product.id} className="item">
+                                <ProductCard
+                                productData={product}
+                                showProductActionBox={showProductActionBox}
+                              />
+                              </div>
+                            ))}
+                        </Slider> */}
                     </div>
                   </div>
                 </div>

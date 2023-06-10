@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Slider from "rc-slider";
 import Link from "next/link";
-import "rc-slider/assets/index.css"
+import "rc-slider/assets/index.css";
 import ProductCard from "../../components/section/productCard/ProductCard";
 import BreadCrumb from "../../components/breadCrumb/BreadCrumb";
 import { getAllProduct } from "../../action/menuApi";
@@ -67,42 +67,48 @@ const PriceFilter = () => {
   );
 };
 
-const shopleft = ({ products, categories, category }) => {
+const shopleft = ({ products, categories, category, categoryId }) => {
   const router = useRouter();
 
   const [showProductActionBox, setShowProductActionBox] = useState(true);
   const [data, setData] = useState(products);
-  const [selectedSortOption, setSelectedSortOption] = useState('');
+  const [selectedSortOption, setSelectedSortOption] = useState("");
 
-  const sortData = (sortOption) => {
-    let sortedData = [...data];
+  const [allProducts, setAllProducts] = useState();
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filteredProductsCate, setFilteredProductsCate] = useState([]);
 
-    switch (sortOption) {
-      //   case 'popularity':
-      //     sortedData = sortedData.sort((a, b) => a.popularity - b.popularity);
-      //     break;
-      //   case 'date':
-      //     sortedData = sortedData.sort((a, b) => a.date - b.date);
-      //     break;
-      case 'price':
-        sortedData = sortedData.sort((a, b) => a.sellingPrice - b.sellingPrice);
-        break;
-      case 'price-desc':
-        sortedData = sortedData.sort((a, b) => b.sellingPrice - a.sellingPrice);
-        break;
-      default:
-        sortedData = products;
-        break;
-    }
-
-    setData(sortedData);
-  };
+  
 
   const handleSortOptionChange = (event) => {
     const selectedOption = event.target.value;
     setSelectedSortOption(selectedOption);
     sortData(selectedOption); // Pass selectedOption as an argument to sortData
   };
+
+  useEffect(() => {
+    const filterProductCate = categories.map((category) => {
+      const filteredProducts = products.filter((product) =>
+        product.categoryId.includes(category.id)
+      );
+      return {
+        category: category,
+        products: filteredProducts,
+      };
+    });
+    setFilteredProductsCate(filterProductCate);
+  }, []);
+
+  console.log(filteredProductsCate);
+  const cateCodeObject = filteredProductsCate.filter(
+    (obj) => obj.category.code === categoryId
+  );
+  // const cateProductArr = cateCodeObject[0];
+
+
+  console.log(cateCodeObject);
+  
+  
 
   return (
     <div className="main_content">
@@ -123,16 +129,30 @@ const shopleft = ({ products, categories, category }) => {
                         <option value="">Mặc định</option>
                         <option value="popularity">Sort by popularity</option>
                         <option value="date">Sort by newness</option>
-                        <option value="price">Sort by price: low to high</option>
-                        <option value="price-desc">Sort by price: high to low</option>
+                        <option value="price">
+                          Sort by price: low to high
+                        </option>
+                        <option value="price-desc">
+                          Sort by price: high to low
+                        </option>
                       </select>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="row shop_container">
-                {data.map((product, index) => (
+                {/* {data.map((product, index) => (
                   <div key={index} className="col-md-4">
+                    <ProductCard
+                      productData={product}
+                      showProductActionBox={showProductActionBox}
+                    />
+                  </div>
+                ))} */}
+                
+                {cateCodeObject.length > 0 &&
+                cateCodeObject[0].products.map((product) => (
+                  <div key={product.id} className="item">
                     <ProductCard
                       productData={product}
                       showProductActionBox={showProductActionBox}
@@ -140,6 +160,8 @@ const shopleft = ({ products, categories, category }) => {
                   </div>
                 ))}
               </div>
+
+              
             </div>
           </div>
           <div className="col-lg-3 order-lg-first mt-4 pt-2 mt-lg-0 pt-lg-0">
@@ -176,28 +198,33 @@ export async function getStaticPaths() {
 
   const paths = categories.map((c) => ({
     params: {
-      slug: c.code
-    }
+      slug: c.code,
+    },
   }));
 
   return {
     paths,
-    fallback: false
+    fallback: false,
   };
 }
 
 export async function getStaticProps({ params }) {
   const data = await getAllProduct();
-  
+
   // here is match the code with code of the collections in the url
   const categoryId = params.slug;
   const categories = data.categories;
   const category = categories.find((c) => c.code === categoryId);
 
+  // const extraObject = filteredProductsCate.filter((obj) => obj.category.code === "GB")
+
+  // extraObject.forEach((obj) => {
+  //   console.log(obj);
+  // })
 
   const products = data.products; // take the products attribute in the menu
 
   return {
-    props: { products, categories, category }
+    props: { products, categories, category, categoryId },
   };
 }

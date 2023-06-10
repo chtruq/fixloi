@@ -4,21 +4,8 @@ import Styles from "../productCard/ProductCard.module.css";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { addToCart} from "@/redux/reducers/cartSlice";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
-const notify = () => {
-  toast.success('Thêm vào giỏ hàng thành công!!', {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    });
-}
+
 
 const formatPrice = (price) => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -34,7 +21,6 @@ const ProductList = ({
   // const {  attribute :  {p, imageUrl, title, price, salePercent, rating, del, description, rating_num} } = productData;
   return (
     <div className={Styles.overall}>
-    <ToastContainer />
       <Link href={`/${productData.code}`}>
         {/* <Link href={"detail"}> */}
         <div className="product m-2" style={{ maxHeight: "8rem" }}>
@@ -53,9 +39,7 @@ const ProductList = ({
                       <Link href="/"
                       
                       >
-                        <i className="icon-basket-loaded" onClick={() => {
-                        notify();
-                      }}/> Add To Cart
+                        <i className="icon-basket-loaded"/> Add To Cart
                       </Link>
                     </li>
                     <li>
